@@ -16,17 +16,15 @@
       </div>
     </template>-->
     <template v-slot:menuHeaderRender>
-      <div>
-        <img src="../assets/logo.svg" />
-        <h1>Pro Layout</h1>
-      </div>
+      <img src="../assets/logo.svg" />
+      <h1 v-if="!collapsed">Pro Layout</h1>
     </template>
     <template v-slot:headerContentRender>
       <div>headerContentRender</div>
     </template>
     <template v-slot:rightContentRender>
-      <div :class="['ant-pro-global-header-index-right', settings.layout === 'topmenu' && `ant-pro-global-header-index-${settings.theme}`]">
-        rightContentRender
+      <div :class="['ant-pro-global-header-index-right', 'right', settings.layout === 'topmenu' && `ant-pro-global-header-index-${settings.theme}`]">
+        <SelectLang />
       </div>
     </template>
     <template v-slot:footerRender>
@@ -44,12 +42,16 @@
 import { asyncRouterMap } from '../config/router.config'
 import { i18nRender } from '../locales'
 
+import SelectLang from '@/components/SelectLang'
 import defaultSettings from '@/config/defaultSettings'
 import LogoSvg from '../assets/logo.svg?inline'
 import { CONTENT_WIDTH_TYPE } from '@/store/mutation-types'
 
 export default {
   name: 'BasicLayout',
+  components: {
+    SelectLang
+  },
   data () {
     return {
       // base
@@ -61,7 +63,7 @@ export default {
       // 媒体查询
       query: {},
       // 布局类型
-      layout: 'sidemenu', // 'sidemenu', 'topmenu'
+      layout: 'topmenu', // 'sidemenu', 'topmenu'
       // 定宽: true / 流式: false
       contentWidth: false, // layout of content: `Fluid` or `Fixed`, only works when layout is topmenu
       // 主题 'dark' | 'light'
@@ -69,6 +71,7 @@ export default {
       // 是否手机模式
       isMobile: false,
       settings: {
+        siderWidth: 208,
         // 布局类型
         layout: defaultSettings.layout, // 'sidemenu', 'topmenu'
         // CONTENT_WIDTH_TYPE

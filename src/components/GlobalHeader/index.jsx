@@ -41,7 +41,7 @@ const GlobalHeader = {
       } = this.$props
       if (collapsedButtonRender !== false && menuRender !== false) {
         return (
-          <span class="ant-pro-global-header-trigger" onClick={toggle}>
+          <span class="ant-pro-global-header-collapsed-button" onClick={toggle}>
             {isFun(collapsedButtonRender) && collapsedButtonRender(h, collapsed) || collapsedButtonRender}
           </span>
         )

@@ -13,6 +13,8 @@ const SiderMenuWrapper = {
   props: SiderMenuProps,
   render (h) {
     const {
+      prefixCls,
+      siderWidth,
       layout,
       isMobile,
       collapsed
@@ -23,12 +25,13 @@ const SiderMenuWrapper = {
     }
     return isMobile ? (
       <Drawer
-        class="ant-pro-sider-menu"
+        class={`${prefixCls}-drawer-sider`}
         visible={!collapsed}
         placement="left"
         maskClosable
         getContainer={null}
         onClose={handleCollapse}
+        width={siderWidth}
         bodyStyle={{
           padding: 0,
           height: '100vh'

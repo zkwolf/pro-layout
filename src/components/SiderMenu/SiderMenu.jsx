@@ -9,6 +9,7 @@ import BaseMenu from '../RouteMenu'
 const { Sider } = Layout
 
 export const SiderMenuProps = {
+  prefixCls: PropTypes.string.def('ant-pro'),
   i18nRender: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(false),
   mode: PropTypes.string.def('inline'),
   theme: PropTypes.string.def('dark'),
@@ -44,7 +45,6 @@ export const defaultRenderLogoAntTitle = (h, props) => {
     title,
     menuHeaderRender
   } = props
-
   if (menuHeaderRender === false) {
     return null
   }
@@ -59,7 +59,7 @@ export const defaultRenderLogoAntTitle = (h, props) => {
   return (
     <span>
       {logoDom}
-      {titleDom}
+      {!props.collapsed && titleDom}
     </span>
   )
 }
@@ -73,6 +73,7 @@ const SiderMenu = {
   props: SiderMenuProps,
   render (h) {
     const {
+      prefixCls,
       collapsible,
       collapsed,
       siderWidth,
@@ -88,7 +89,9 @@ const SiderMenu = {
       menuHeaderRender,
       menuRender
     } = this
-    const siderCls = ['ant-pro-sider-menu-sider']
+
+    const baseClassName = `${prefixCls}-sider`
+    const siderCls = [baseClassName]
     if (fixSiderbar) siderCls.push('fix-sider-bar')
     if (theme === 'light') siderCls.push('light')
     //
@@ -107,15 +110,12 @@ const SiderMenu = {
       width={siderWidth}
       theme={theme}
       collapsible={collapsible}
+      collapsedWidth={48}
       collapsed={collapsed}
       onCollapse={handleCollapse}
     >
       {headerDom && (
-        <div
-          class="ant-pro-sider-menu-logo"
-          onClick={onMenuHeaderClick}
-          id="logo"
-        >
+        <div class={`${baseClassName}-logo`} onClick={onMenuHeaderClick} id="logo">
           <router-link to={{ path: '/' }}>
             {headerDom}
           </router-link>

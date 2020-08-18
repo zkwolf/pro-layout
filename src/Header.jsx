@@ -4,11 +4,10 @@ import 'ant-design-vue/es/layout/style'
 import Layout from 'ant-design-vue/es/layout'
 
 import PropTypes from 'ant-design-vue/es/_util/vue-types'
-import BaseMenu from './components/RouteMenu/BaseMenu'
-import { defaultRenderLogoAntTitle, SiderMenuProps } from './components/SiderMenu/SiderMenu'
+import { SiderMenuProps } from './components/SiderMenu/SiderMenu'
 import GlobalHeader, { GlobalHeaderProps } from './components/GlobalHeader'
 import { VueFragment } from './components'
-import { isFun } from './utils/util'
+import TopNavHeader from './components/TopNavHeader'
 
 const { Header } = Layout
 
@@ -26,32 +25,18 @@ export const HeaderViewProps = {
   visible: PropTypes.bool.def(true),
 }
 
-
 const renderContent = (h, props) => {
   const isTop = props.layout === 'topmenu'
-  const maxWidth = 1200 - 280 - 120
-  const contentWidth = props.contentWidth === 'Fixed'
-  const baseCls = 'ant-pro-top-nav-header'
-  const { logo, title, theme, isMobile, headerRender, rightContentRender, menuHeaderRender } = props
-  const rightContentProps = { theme, isTop, isMobile }
+  const { isMobile, theme, headerRender } = props
+  console.log('props', props)
   let defaultDom = <GlobalHeader {...{ props: props }} />
   if (isTop && !isMobile) {
     defaultDom = (
-      <div class={[baseCls, theme]}>
-        <div class={[`${baseCls}-main`, contentWidth ? 'wide' : '']}>
-          {menuHeaderRender && (
-            <div class={`${baseCls}-left`}>
-              <div class={`${baseCls}-logo`} key="logo" id="logo">
-                {defaultRenderLogoAntTitle(h, { logo, title, menuHeaderRender })}
-              </div>
-            </div>
-          )}
-          <div class={`${baseCls}-menu`} style={{ maxWidth: `${maxWidth}px`, flex: 1 }}>
-            <BaseMenu {...{ props: props }} />
-          </div>
-          {isFun(rightContentRender) && rightContentRender(h, rightContentProps) || rightContentRender}
-        </div>
-      </div>
+      <TopNavHeader
+        theme={theme}
+        mode="horizontal"
+        {...{ props: props }}
+      />
     )
   }
   if (headerRender) {
@@ -88,10 +73,15 @@ const HeaderView = {
     return (
       visible ? (
         <VueFragment>
-          { fixedHeader && <Header />}
+          { fixedHeader && <Header style={{
+            height: '48px',
+            lineHeight: '48px',
+          }}/>}
           <Header
             style={{
               padding: 0,
+              height: '48px',
+              lineHeight: '48px',
               width: needSettingWidth
                 ? `calc(100% - ${collapsed ? 80 : siderWidth}px)`
                 : '100%',
